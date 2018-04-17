@@ -45,6 +45,8 @@ def wipe_cookies(cookiefile, permitted_suffixes):
 
 if __name__ == '__main__':
     prospective_cookiefiles = list(pathlib.Path.home().glob('.mozilla/**/cookies.sqlite'))
+    if len(prospective_cookiefiles) == 0:
+        prospective_cookiefiles = list(pathlib.Path.home().glob('Library/Application Support/Firefox/**/cookies.sqlite'))
     if len(prospective_cookiefiles) != 1:
         print('Did not find exactly one cookie file. Not doing anything to avoid breakage.\n')
         print(' '.join([str(x) for x in prospective_cookiefiles]))
@@ -54,7 +56,7 @@ if __name__ == '__main__':
     print('Using cookie file %s.\n' % cookiefile)
     pres_file = 'preserved_host_suffixes.txt'
     if not os.path.exists(pres_file):
-        sys.exit('preserved_suffixes.txt file not found.')
+        sys.exit('preserved_host_suffixes.txt file not found.')
     permitted_suffixes = []
     for line in open(pres_file):
         line = line.strip()
